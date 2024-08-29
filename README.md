@@ -1,5 +1,6 @@
 # speedtest_docker
 
+## Docker container to run speedtest and send results to mqtt
 
 run it with docker compose:
 ```
