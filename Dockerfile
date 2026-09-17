@@ -1,12 +1,37 @@
-FROM alpine:latest
+FROM debian:bookworm-slim
 
-RUN apk add speedtest-cli mosquitto-clients
+ENV DEBIAN_FRONTEND=noninteractive
 
-COPY speedtest_run.sh /opt/speedtest_run.sh
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        jq \
+        mosquitto-clients \
+        tini \
+    && curl -fsSL \
+        https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh \
+        | bash \
+    && apt-get install -y --no-install-recommends \
+        speedtest \
+    && rm -rf /var/lib/apt/lists/* \
+    && useradd \
+        --system \
+        --no-create-home \
+        --shell /usr/sbin/nologin \
+        speedtest-runner
 
-RUN chmod 755 /opt/speedtest_run.sh
+COPY --chown=speedtest-runner:speedtest-runner \
+    speedtest_run.sh \
+    run_loop.sh \
+    /opt/
 
-# run only specific script ie. remove other crons
-RUN echo '2  *  *  *  *    /opt/speedtest_run.sh' > /etc/crontabs/root
+RUN chmod 0555 \
+        /opt/speedtest_run.sh \
+        /opt/run_loop.sh \
+    && speedtest --version
 
-CMD crond -l 2 -f
+USER speedtest-runner
+
+ENTRYPOINT ["/usr/bin/tini", "--"]
+CMD ["/opt/run_loop.sh"]
