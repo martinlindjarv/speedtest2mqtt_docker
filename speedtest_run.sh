@@ -79,23 +79,23 @@ publish()
 }
 
 publish "ping" "$ping"
-publish "jitter" "$jitter"
-publish "packet_loss" "$packet_loss"
+#publish "jitter" "$jitter"
+#publish "packet_loss" "$packet_loss"
 publish "download" "$download"
 publish "upload" "$upload"
-publish "server" "$server"
+#publish "server" "$server"
 
-if [ -n "$result_url" ]; then
-    publish "result_url" "$result_url"
-fi
+#if [ -n "$result_url" ]; then
+#    publish "result_url" "$result_url"
+#fi
 
 # Publish the complete result as one retained JSON message too.
-publish "json" "$result"
+#publish "json" "$result"
 
-echo "Speedtest result published:"
-echo "  Ping:        ${ping} ms"
-echo "  Jitter:      ${jitter} ms"
-echo "  Packet loss: ${packet_loss}%"
-echo "  Download:    ${download} Mbps"
-echo "  Upload:      ${upload} Mbps"
-echo "  Server:      ${server}"
+#echo "Speedtest result published:"
+#echo "  Ping:        ${ping} ms"
+#echo "  Jitter:      ${jitter} ms"
+#echo "  Packet loss: ${packet_loss}%"
+#echo "  Download:    ${download} Mbps"
+#echo "  Upload:      ${upload} Mbps"
+#echo "  Server:      ${server}"
