@@ -31,6 +31,9 @@ RUN chmod 0555 \
         /opt/run_loop.sh \
     && speedtest --version
 
+RUN mkdir -p /home/speedtest-runner \
+ && chown -R speedtest-runner:speedtest-runner /home/speedtest-runner
+ 
 USER speedtest-runner
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
